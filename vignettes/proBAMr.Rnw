@@ -1,0 +1,231 @@
+%\VignetteIndexEntry{Introduction to proBAMr}
+%\VignetteKeywords{Proteogenomics, Data integration, Protein assembly}
+%\VignettePackage{proBAMr}
+\documentclass[11pt]{article}
+\usepackage{times}
+\usepackage[utf8]{inputenc} 
+\usepackage{hyperref}
+\usepackage{booktabs,caption,fixltx2e}
+\usepackage[flushleft]{threeparttable}
+
+\textwidth=6.5in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=-.1in
+\evensidemargin=-.1in
+\headheight=-.3in
+
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{{\textit{#1}}}
+\newcommand{\Rcode}[1]{{\texttt{#1}}}
+
+\newcommand{\software}[1]{\textsf{#1}}
+\newcommand{\R}{\software{R}}
+\newcommand{\Bioconductor}{\software{Bioconductor}}
+\newcommand{\proBAMr}{\Rpackage{proBAMr}}
+
+
+
+\title{Introduction to \proBAMr}
+\author{Xiaojing Wang}
+\date{\today}
+
+\begin{document} 
+
+\maketitle
+\tableofcontents
+
+
+\section{Why proBAM file}
+
+Recent advances of sequencing technologies have reformed our conception of 
+genomic data analysis, storage and interpretation, instigating more research 
+interest in exploring human proteome at a parallel scale. Shotgun proteomics 
+holds this promise by surveying proteome both qualitatively and 
+quantitatively. 
+Over the last years large amount of proteomics data has been accumulated, 
+an emerging demand is to combine these efforts to catalogue the wide dynamic 
+range of protein expression and complexity of alternative isoforms. However, 
+this task is daunting due to the fact that different studies use varying 
+databases, search engines and assembly tools. Such a challenge calls for an 
+efficient approach of integrating data from different proteomics studies and 
+even with genomic data.
+
+Here we provide an R package, \Rpackage{proBAMr}, that maps identified 
+PSMs to the genome in BAM format, a binary format for efficient data storage 
+and fast access in genomic research field. This method differs from other 
+approaches because of its ability of building connections between peptide 
+and genomic location and simultaneously maintaining spectra count information.
+PSMs are aligned under the same coordination framework regardless of the 
+annotation systems (e.g. RefSeq, ENSEMBL) of the input proteomics data, 
+which enables flexible protein assembly switch between different annotation or 
+at different level (gene or protein). When genomic/transcriptomic information 
+of the same individual is available, this approach allows the co-analysis with 
+-omics data together. 
+
+\section{What is proBAM file}
+
+\begin{table*}[!ht]
+    \centering
+    \caption{Mandatory field definition of proBAM file and compare to original 
+    BAM format for genomic studies.}
+        \includegraphics[keepaspectratio=true, width=\textwidth]{Tab1.jpg}
+    \label{tab:MandatoryproBAM}
+\end{table*}
+
+To take full advantage of tools developed for processing BAM files in genomics 
+studies, we designed proBAM by incorporating features from the BAM file format 
+and other features specifically for proteomics. Like BAM, it contains a header 
+section and an alignment section. A full description of the BAM format is 
+available at \url{http://samtools.github.io/hts-specs/SAMv1.pdf}. A PSGM 
+(peptide-spectrum-genomic location-match) is the basic unit in proBAM and is 
+similar to a read in NGS data. In Table \ref{tab:MandatoryproBAM}, 
+we compared the BAM and proBAM description of each mandatory column 
+in the alignment section.
+
+\begin{table*}[!ht]
+    \centering
+    \caption{FLAG description in proBAM file.}
+        \includegraphics[keepaspectratio=true, width=\textwidth]{Tab2.jpg}
+    \label{tab:FLAGproBAM}
+\end{table*}
+
+proBAM allows for 5 FLAG values due to the less complicated requirements by 
+shotgun proteomics data (Table \ref{tab:FLAGproBAM}). For the same reason, 
+the CIGAR tag in proBAM file only supports 'M' for match/mismatch and 'N' for 
+skipped bases on the reference. 
+
+The optional filed keep extra information from 
+proteomics experiment platform or search engines. The definition and value 
+format of each optional column is descripted in 
+Table \ref{tab:OptionalproBAM}. 
+It is important to note that this table is extendable depending on continuous 
+development and input from the community.
+
+\begin{table*}[!ht]
+    \centering
+    \caption{Optional field definition of proBAM file.}
+        \includegraphics[keepaspectratio=true, width=\textwidth]{Tab3.jpg}
+    \begin{tablenotes}
+        \small
+        \item The optional field follow the rule TAG:TYPE:VALUE defined 
+        by BAM file. There are three type of VALUE format: 
+        i, Singed 32-bit integer; Z, Printable string; 
+        f, Single-precision floating number.
+    \end{tablenotes}
+    \label{tab:OptionalproBAM}
+\end{table*}
+
+\section{How to build proBAM file}
+\subsection{Preparing annotation files}
+To map proteomics data to the genome, numerous pieces of genome annotation 
+information are needed, such as genome elements region boundary, protein 
+coding sequence and protein sequence et al. It is possible to manually 
+download 
+these data from different public resources (e.g. NCBI, UCSC and ENSEMBL) 
+and then parse them to an appropriate format. To make this process more 
+efficient and autonomous, we provide functions to prepare the 
+gene/transcript annotation files from UCSC, ENSEMBL and GENCODE. The 
+\Rfunction{PrepareAnnotationRefseq} and \Rfunction{PrepareAnnotationEnsembl} 
+were included in another R package \Rpackage{customProDB} 
+\url{http://bioconductor.org/packages/3.0/bioc/html/customProDB.html}. 
+Here, we provide the function \Rfunction{PrepareAnnotationGENCODE} to prepare 
+the annotation from GENCODE. 
+This function requires users to download GTF file, coding sequence and 
+protein sequence FASTA files from GENCODE ftp 
+\url{ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/}. 
+Users should use the same 
+version of annotations through the same project annalysis. All the annotations 
+are saved to a specified directory for latter use. 
+
+<<options, echo=FALSE>>=
+options(width=70)
+@
+
+<<loadpkg, eval=TRUE>>=
+library(proBAMr)
+@
+
+<<PrepareAnno, eval=TRUE>>=
+gtfFile <- system.file("extdata", "test.gtf", package="proBAMr")
+CDSfasta <- system.file("extdata", "coding_seq.fasta", package="proBAMr") 
+pepfasta <- system.file("extdata", "pro_seq.fasta", package="proBAMr") 
+annotation_path <- tempdir()
+PrepareAnnotationGENCODE(gtfFile, CDSfasta, pepfasta, 
+                annotation_path, dbsnp=NULL, 
+                splice_matrix=FALSE, COSMIC=FALSE)  
+@
+
+
+\subsection{Preparing PSMs table}
+After preparing all the annotation files, the R package \Rpackage{pepXMLTab} is
+used to extract confident PSMs and related information from pepXML files. 
+Other tools are also applicable at this step, 
+as long as it generates similar tabular files, as shown below. 
+
+<<PSMstab, eval=TRUE>>=
+passedPSM <- read.table(system.file("extdata", "passedPSM.tab", 
+    package="proBAMr"), sep='\t', header=TRUE)
+passedPSM[1:3, ]
+@
+
+
+\subsection{Generate SAM file using \Rfunction{PSMtab2SAM}}
+The function \Rfunction{PSMtab2SAM} first finds the peptide location in protein 
+sequences, then maps the coding sequence of the peptide back to the genome 
+according to the annotation.
+
+
+<<PSMs2SAM, eval=TRUE>>=
+load(system.file("extdata/GENCODE", "exon_anno.RData", package="proBAMr"))
+load(system.file("extdata/GENCODE", "proseq.RData", package="proBAMr"))
+load(system.file("extdata/GENCODE", "procodingseq.RData", package="proBAMr"))
+options(stringsAsFactors=FALSE)
+passedPSM <- read.table(system.file("extdata", "passedPSM.tab", 
+    package="proBAMr"), sep='\t', header=TRUE)
+SAM <- PSMtab2SAM(passedPSM, XScolumn='mvh', exon, proteinseq, 
+    procodingseq)
+write.table(SAM, file=paste(tempdir(), '/test.sam', sep=''), 
+        sep='\t', quote=FALSE, row.names=FALSE, col.names=FALSE)
+dim(SAM)
+SAM[20:27, ]
+@
+
+
+\subsection{Convert SAM file to BAM and index}
+Add the header to the SAM file. Converted them to the binary BAM files using 
+samtools \url{http://samtools.sourceforge.net/}. 
+Sort and index them for fast access.
+
+The bullet list below summarizes the steps after the SAM file been generated.
+
+<<SAM2BAM, eval=TRUE>>=
+paste('cat header test.sam > test_header.sam')
+paste('samtools view -S -b test_header.sam > test_header.bam')
+paste('samtools sort test_header.bam > test_header_sort')
+paste('samtools index test_header_sort')
+@
+
+\subsection{Visulize proteomics data in IGV}
+The proBAM files can be visulized in IGV directly. Furthermore, users can 
+co-visulize their proteomics data with the paired genomics/transcriptomics 
+data, as shown in Fig \ref{fig:igvprobam}.
+
+\begin{figure}[!ht]
+    \caption{IGV snapshot of a homozygous mutation in gene ALDH1B1 in 
+    both proteomics and RNA-Seq data (inside read box)}
+    \centering
+        \includegraphics[keepaspectratio=true, width=\textwidth]{Fig1.jpg}
+    \label{fig:igvprobam}
+\end{figure}
+
+\section{Session Information}
+
+<<SessionInfo, echo=FALSE>>=
+sessionInfo()
+@
+
+\end{document}
