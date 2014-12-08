@@ -1,7 +1,7 @@
 Package: proBAMr
 Type: Package
 Title: Generating SAM file for PSMs in shotgun proteomics data.
-Version: 1.0.0
+Version: 1.0.1
 Date: 2014-08-28
 Author: Xiaojing Wang
 Maintainer: Xiaojing Wang <xiaojing.wang@vanderbilt.edu>

@@ -68,13 +68,13 @@ of the same individual is available, this approach allows the co-analysis with
 
 \section{What is proBAM file}
 
-\begin{table*}[!ht]
+\begin{table}[!ht]
     \centering
     \caption{Mandatory field definition of proBAM file and compare to original 
     BAM format for genomic studies.}
         \includegraphics[keepaspectratio=true, width=\textwidth]{Tab1.jpg}
     \label{tab:MandatoryproBAM}
-\end{table*}
+\end{table}
 
 To take full advantage of tools developed for processing BAM files in genomics 
 studies, we designed proBAM by incorporating features from the BAM file format 
@@ -86,12 +86,12 @@ similar to a read in NGS data. In Table \ref{tab:MandatoryproBAM},
 we compared the BAM and proBAM description of each mandatory column 
 in the alignment section.
 
-\begin{table*}[!ht]
+\begin{table}[!ht]
     \centering
     \caption{FLAG description in proBAM file.}
         \includegraphics[keepaspectratio=true, width=\textwidth]{Tab2.jpg}
     \label{tab:FLAGproBAM}
-\end{table*}
+\end{table}
 
 proBAM allows for 5 FLAG values due to the less complicated requirements by 
 shotgun proteomics data (Table \ref{tab:FLAGproBAM}). For the same reason, 
@@ -105,7 +105,7 @@ Table \ref{tab:OptionalproBAM}.
 It is important to note that this table is extendable depending on continuous 
 development and input from the community.
 
-\begin{table*}[!ht]
+\begin{table}[!ht]
     \centering
     \caption{Optional field definition of proBAM file.}
         \includegraphics[keepaspectratio=true, width=\textwidth]{Tab3.jpg}
@@ -117,7 +117,7 @@ development and input from the community.
         f, Single-precision floating number.
     \end{tablenotes}
     \label{tab:OptionalproBAM}
-\end{table*}
+\end{table}
 
 \section{How to build proBAM file}
 \subsection{Preparing annotation files}
