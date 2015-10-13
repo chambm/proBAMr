@@ -1,0 +1,14 @@
+import(Biostrings)
+import(GenomicFeatures)
+#import(rtracklayer)
+import(IRanges)
+import(GenomicRanges)
+import(AnnotationDbi)
+
+importFrom(rtracklayer,browserSession, ucscTableQuery,
+            tableNames, getTable, trackNames, ucscSchema)
+
+export(PrepareAnnotationGENCODE,
+    PSMtab2SAM
+)
+
