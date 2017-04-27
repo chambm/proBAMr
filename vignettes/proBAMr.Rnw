@@ -167,8 +167,8 @@ Other tools are also applicable at this step,
 as long as it generates similar tabular files, as shown below. 
 
 <<PSMstab, eval=TRUE>>=
-passedPSM <- read.table(system.file("extdata", "passedPSM.tab", 
-    package="proBAMr"), sep='\t', header=TRUE)
+passedPSM <- readPepXmlTab(system.file("extdata/psm/passedPSM.tab", 
+                                       package="proBAMr"))
 passedPSM[1:3, ]
 @
 
@@ -183,13 +183,10 @@ according to the annotation.
 load(system.file("extdata/GENCODE", "exon_anno.RData", package="proBAMr"))
 load(system.file("extdata/GENCODE", "proseq.RData", package="proBAMr"))
 load(system.file("extdata/GENCODE", "procodingseq.RData", package="proBAMr"))
-options(stringsAsFactors=FALSE)
-passedPSM <- read.table(system.file("extdata", "passedPSM.tab", 
-    package="proBAMr"), sep='\t', header=TRUE)
-SAM <- PSMtab2SAM(passedPSM, XScolumn='mvh', exon, proteinseq, 
-    procodingseq)
-write.table(SAM, file=paste(tempdir(), '/test.sam', sep=''), 
-        sep='\t', quote=FALSE, row.names=FALSE, col.names=FALSE)
+passedPSM <- readPepXmlTab(system.file("extdata/psm/passedPSM.tab", 
+                                       package="proBAMr"))
+PSMtab2SAM(passedPSM, exon, proteinseq,  procodingseq, outfile=paste0(tempdir(), '/test.sam'))
+SAM <- read.table(paste0(tempdir(), '/test.sam'))
 dim(SAM)
 SAM[20:27, ]
 @

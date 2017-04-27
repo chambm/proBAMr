@@ -1,17 +1,39 @@
 Package: proBAMr
 Type: Package
-Title: Generating SAM file for PSMs in shotgun proteomics data
-Version: 1.9.0
-Date: 2016-03-31
-Author: Xiaojing Wang
-Maintainer: Xiaojing Wang <xiaojing.wang@vanderbilt.edu>
-Description: Mapping PSMs back to genome. The package builds SAM file
-        from shotgun proteomics data The package also provides function
-        to prepare annotation from GTF file.
+Title: Generating SAM Files From Shotgun Proteomics Data
+Version: 2.0.0
+Date: 2017-04-27
+Authors@R: c(person("Xiaojing", "Wang", email="xiaojing.wang@vcm.edu", role=c("aut", "cre"))
+    person("Matt", "Chambers", email="matt.chambers42@gmail.com", role=c("aut", "cph")),
+    person("Baylor College of Medicine", role="cph"),
+    person("Vanderbilt University", role="cph"))
+Description: The interpretation of proteomics data is significantly enhanced by genomic annotation. 
+    Using proBAMr, peptide-spectrum-matches can be easily reannotated using user-specified gene annotation 
+    schemes and assembled into both protein and gene identifications. Using the genome as a common reference, 
+    proBAMr facilitates seamless proteomics and proteogenomics data integration. ProBAM files can be readily 
+    visualized in genome browsers and thus bring proteomics data analysis to a general audience beyond the 
+    proteomics community.
 License: Artistic-2.0
-Depends: R (>= 3.0.1), IRanges, AnnotationDbi
-Imports: GenomicRanges, Biostrings, GenomicFeatures, rtracklayer
-Suggests: RUnit, BiocGenerics
+Depends: R (>= 3.0.1)
+Imports:
+    GenomicRanges,
+    Biostrings,
+    GenomicFeatures,
+    rtracklayer,
+    IRanges,
+    AnnotationDbi,
+    AhoCorasickTrie,
+    customProDB,
+    data.table,
+    fastmatch,
+    RSQLite,
+    stringr,
+    stringi
+Suggests:
+    testthat,
+    diffobj,
+    covr
 biocViews: Proteomics, MassSpectrometry, Software, Visualization
 NeedsCompilation: no
 Packaged: 2015-10-14 04:58:30 UTC; biocbuild
+RoxygenNote: 6.0.1

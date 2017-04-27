@@ -1,37 +1,36 @@
-##' prepare the annotation from GENCODE. Download GTF and FASTA files from 
-##' GENCODE ftp first. Read introduction for more information.
-##' 
-##' @title prepare annotation from GENCODE
-##' @param gtfFile specify GTF file location.
-##' @param CDSfasta path to the fasta file of coding sequence.
-##' @param pepfasta path to the fasta file of protein sequence.
-##' @param annotation_path specify a folder to store all the annotations.
-##' @param dbsnp specify a snp dataset to be used for the SNP annotation, 
-##' default is NULL. (e.g. "snp135")
-##' @param splice_matrix whether generate a known exon splice matrix from the 
-##' annotation. this is not necessary if you don't want to analyse junction 
-##' results, default is FALSE. 
-##' @param COSMIC whether to download COSMIC data, default is FALSE.
-##' @param ... additional arguments
-##' @return several .RData files containing annotations needed for further 
-##' analysis.
-##' @author Xiaojing Wang
-##' @examples
-##' 
-##' gtfFile <- system.file("extdata", "test.gtf", package="proBAMr")
-##' CDSfasta <- system.file("extdata", "coding_seq.fasta", package="proBAMr") 
-##' pepfasta <- system.file("extdata", "pro_seq.fasta", package="proBAMr") 
-##' annotation_path <- tempdir()
-##' PrepareAnnotationGENCODE(gtfFile, CDSfasta, pepfasta, 
-##'                 annotation_path, dbsnp=NULL, 
-##'                 splice_matrix=FALSE, COSMIC=FALSE)  
-##' 
-
-
+#' prepare the annotation from GENCODE. Download GTF and FASTA files from
+#' GENCODE ftp first. Read introduction for more information.
+#'
+#' @title prepare annotation from GENCODE
+#' @param gtfFile specify GTF file location.
+#' @param CDSfasta path to the fasta file of coding sequence.
+#' @param pepfasta path to the fasta file of protein sequence.
+#' @param annotation_path specify a folder to store all the annotations.
+#' @param dbsnp specify a snp dataset to be used for the SNP annotation,
+#' default is NULL. (e.g. "snp135")
+#' @param splice_matrix whether generate a known exon splice matrix from the
+#' annotation. this is not necessary if you don't want to analyse junction
+#' results, default is FALSE.
+#' @param COSMIC whether to download COSMIC data, default is FALSE.
+#' @param ... additional arguments
+#' @return several .RData files containing annotations needed for further
+#' analysis.
+#' @author Xiaojing Wang
+#'
+#' @export
+#' 
+#' @examples
+#' gtfFile <- system.file("extdata", "test.gtf", package="proBAMr")
+#' CDSfasta <- system.file("extdata", "coding_seq.fasta", package="proBAMr")
+#' pepfasta <- system.file("extdata", "pro_seq.fasta", package="proBAMr")
+#' annotation_path <- tempdir()
+#' PrepareAnnotationGENCODE(gtfFile, CDSfasta, pepfasta,
+#'                 annotation_path, dbsnp=NULL,
+#'                 splice_matrix=FALSE, COSMIC=FALSE)
+#'
 PrepareAnnotationGENCODE <- function(gtfFile, CDSfasta, pepfasta, 
-                annotation_path, dbsnp=NULL, 
-                splice_matrix=FALSE, COSMIC=FALSE, 
- ...) {
+                                     annotation_path, dbsnp=NULL, 
+                                     splice_matrix=FALSE, COSMIC=FALSE, ...) {
     options(stringsAsFactors=FALSE)
     if (!is.null(dbsnp)) {
         session  <- browserSession()
