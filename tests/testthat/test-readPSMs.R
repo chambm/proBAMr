@@ -1,4 +1,5 @@
 library(testthat)
+library(customProDB)
 library(proBAMr)
 
 context("readPSMs")
