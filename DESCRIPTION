@@ -3,7 +3,7 @@ Type: Package
 Title: Generating SAM Files From Shotgun Proteomics Data
 Version: 2.0.0
 Date: 2017-04-27
-Authors@R: c(person("Xiaojing", "Wang", email="xiaojing.wang@vcm.edu", role=c("aut", "cre"))
+Authors@R: c(person("Xiaojing", "Wang", email="xiaojing.wang@vcm.edu", role=c("aut", "cre")),
     person("Matt", "Chambers", email="matt.chambers42@gmail.com", role=c("aut", "cph")),
     person("Baylor College of Medicine", role="cph"),
     person("Vanderbilt University", role="cph"))
