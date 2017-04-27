@@ -33,6 +33,7 @@ Suggests:
     testthat,
     diffobj,
     covr
+Remotes: chambm/customProDB
 biocViews: Proteomics, MassSpectrometry, Software, Visualization
 NeedsCompilation: no
 Packaged: 2015-10-14 04:58:30 UTC; biocbuild
