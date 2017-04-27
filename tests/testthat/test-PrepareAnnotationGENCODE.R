@@ -31,7 +31,7 @@ load_annotations = function(annotation_path, envir, dbsnp=FALSE, cosmic=FALSE) {
   }
 }
 
-on.update.edit=customProDB:::on.update.edit
+on.update.view=customProDB:::on.update.view
 on.fail.diff=customProDB:::on.fail.diff
 
 test_that("Preparing annotation from GENCODE", {
