@@ -38,6 +38,9 @@ PSMtab2SAM <- function(passedPSM, exon_anno,
                        outfile = "output.sam",
                        show_progress = TRUE, ...)
 {
+  old <- options(stringsAsFactors = FALSE)
+  on.exit(options(old), add = TRUE)
+  
   setDT(passedPSM, key="PeptideSequence") # convert to data.table for fast grouping
   # group by peptide so consecutive PSMs for the same peptide do not need to be remapped
   

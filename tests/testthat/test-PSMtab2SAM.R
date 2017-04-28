@@ -3,6 +3,8 @@ library(customProDB)
 library(proBAMr)
 
 context("PSMtab2SAM")
+old <- options(stringsAsFactors = FALSE)
+on.exit(options(old), add = TRUE)
 
 
 on.update.view = customProDB:::on.update.view
@@ -22,7 +24,7 @@ test_that("PSM2SAM works with IDPicker for hg19 annotation and variant parameter
   psmFilepath = system.file("extdata/psm/test.idpDB", package="proBAMr")
   passedPSM = readIdpDB(psmFilepath, "MyriMatch:MVH")
   
-  variantAnnotation <- getVariantAnnotation(vcfFilepath, "hg19",
+  variantAnnotation <- getVariantAnnotation(vcfFilepath,
                                             ids, exon,
                                             proteinseq, procodingseq,
                                             dbsnpinCoding, cosmic)
@@ -69,7 +71,7 @@ test_that("PSM2SAM works with PeptideShaker for mm10 annotation", {
   vcfFilepaths = system.file(c("extdata/mm10/test-sample1.vcf.gz",
                                "extdata/mm10/test-sample2.vcf.gz"),
                              package="proBAMr")
-  variantAnnotation <- getVariantAnnotation(vcfFilepaths, "mm10",
+  variantAnnotation <- getVariantAnnotation(vcfFilepaths,
                                             ids, exon,
                                             proteinseq, procodingseq,
                                             dbsnpinCoding = NULL,

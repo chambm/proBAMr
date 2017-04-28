@@ -35,6 +35,9 @@
 
 readIdpDB <- function(idpDbFilepath, scoreName)
 {
+  old <- options(stringsAsFactors = FALSE)
+  on.exit(options(old), add = TRUE)
+  
   stopifnot(file.exists(idpDbFilepath))
   
   drv <- RSQLite::SQLite()
@@ -98,6 +101,9 @@ readIdpDB <- function(idpDbFilepath, scoreName)
 #' head(result)
 readPeptideShakerPsmReport <- function(psmReportFilepath)
 {
+  old <- options(stringsAsFactors = FALSE)
+  on.exit(options(old), add = TRUE)
+  
   stopifnot(file.exists(psmReportFilepath))
 
   # Source columns:
@@ -165,8 +171,7 @@ readPeptideShakerPsmReport <- function(psmReportFilepath)
              MissedCleavages = NA,
              Rank = 1,
              FdrScore = (100 - result$Confidence....)/100,
-             SearchEngineScore = NA,
-             stringsAsFactors = FALSE)
+             SearchEngineScore = NA)
 }
 
 #' Read PSMs from a pepXMLTab file
@@ -187,8 +192,11 @@ readPeptideShakerPsmReport <- function(psmReportFilepath)
 
 readPepXmlTab <- function(pepXmlTabFilepath, searchEngineScore = "mvh", decoyPattern = NULL)
 {
+  old <- options(stringsAsFactors = FALSE)
+  on.exit(options(old), add = TRUE)
+  
   stopifnot(file.exists(pepXmlTabFilepath))
-  passedPSM = read.delim(pepXmlTabFilepath, row.names=NULL, stringsAsFactors = FALSE)
+  passedPSM = read.delim(pepXmlTabFilepath, row.names=NULL)
   stopifnot(searchEngineScore %in% colnames(passedPSM))
   
   spectrumSource = sub("(.*?)\\.\\d+\\.\\d+.\\d+$", "\\1", passedPSM$spectrum)
@@ -214,6 +222,5 @@ readPepXmlTab <- function(pepXmlTabFilepath, searchEngineScore = "mvh", decoyPat
              MissedCleavages = passedPSM$num_missed_cleavages,
              Rank = passedPSM$hit_rank,
              FdrScore = NA,
-             SearchEngineScore = passedPSM[, searchEngineScore],
-             stringsAsFactors = FALSE)
+             SearchEngineScore = passedPSM[, searchEngineScore])
 }

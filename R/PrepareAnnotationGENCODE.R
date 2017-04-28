@@ -31,7 +31,9 @@
 PrepareAnnotationGENCODE <- function(gtfFile, CDSfasta, pepfasta, 
                                      annotation_path, dbsnp=NULL, 
                                      splice_matrix=FALSE, COSMIC=FALSE, ...) {
-    options(stringsAsFactors=FALSE)
+    old <- options(stringsAsFactors = FALSE)
+    on.exit(options(old), add = TRUE)
+    
     if (!is.null(dbsnp)) {
         session  <- browserSession()
         dbsnps <- trackNames(session)[grep('snp', trackNames(session), 

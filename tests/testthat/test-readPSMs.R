@@ -3,6 +3,8 @@ library(customProDB)
 library(proBAMr)
 
 context("readPSMs")
+old <- options(stringsAsFactors = FALSE)
+on.exit(options(old), add = TRUE)
 
 on.update.view = customProDB:::on.update.view
 on.fail.diff = customProDB:::on.fail.diff
