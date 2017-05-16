@@ -32,6 +32,7 @@ test_that("PSM2SAM works with IDPicker for hg19 annotation and variant parameter
   snvproseq = variantAnnotation$snvproseq
 
   samFilepath = paste0(tools::file_path_sans_ext(psmFilepath), "-hg19-idpicker-with-vcf.sam")
+  file.create(samFilepath)
   
   PSMtab2SAM(passedPSM, exon,
              proteinseq, procodingseq,
@@ -56,6 +57,7 @@ test_that("PSM2SAM works with PeptideShaker for mm10 annotation", {
   psmFilepath = system.file("extdata/psm/test.psm-report", package="proBAMr")
   passedPSM = readPeptideShakerPsmReport(psmFilepath)
   samFilepath = file.path(tempdir(), basename(sub(".psm-report", "-mm10-peptideshaker-no-vcf.sam", psmFilepath)))
+  file.create(samFilepath)
   
   # first run, no VCF
   PSMtab2SAM(passedPSM, exon,
@@ -79,7 +81,10 @@ test_that("PSM2SAM works with PeptideShaker for mm10 annotation", {
                  
   varprocoding = unique(rbind(variantAnnotation$snvprocoding, variantAnnotation$indelprocoding))
   varproseq = unique(rbind(variantAnnotation$snvproseq, variantAnnotation$indelproseq))
-  
+
+  samFilepath = file.path(tempdir(), basename(sub(".psm-report", "-mm10-peptideshaker-with-vcf.sam", psmFilepath)))
+  file.create(samFilepath)
+
   # second run, with VCF
   PSMtab2SAM(passedPSM, exon,
              proteinseq, procodingseq,
@@ -104,6 +109,7 @@ test_that("PSM2SAM works with pepXMLTab for GENCODE annotation and no variant pa
   psmFilepath = system.file("extdata/psm/passedPSM.tab", package="proBAMr")
   passedPSM = readPepXmlTab(psmFilepath, decoyPattern=NULL, searchEngineScore="mvh")
   samFilepath = paste0(tools::file_path_sans_ext(psmFilepath), "-gencode-pepxmltab-no-vcf.sam")
+  file.create(samFilepath)
   
   load(system.file("extdata/res/SAM.RData", package="proBAMr"))
   

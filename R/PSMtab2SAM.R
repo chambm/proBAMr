@@ -221,7 +221,7 @@ PSMtab2SAM <- function(passedPSM, exon_anno,
   }
   
   message("Mapping peptides to genome...")
-  con = file(outfile, "w+b")
+  con = file(outfile, "a+b")
   if (show_progress) pb = txtProgressBar(style=3, min=1, max=nrow(passedPSM))
   i=1
   psmCount = nrow(passedPSM)
