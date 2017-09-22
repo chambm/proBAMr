@@ -3,8 +3,7 @@ library(customProDB)
 library(proBAMr)
 
 context("PSMtab2SAM")
-old <- options(stringsAsFactors = FALSE)
-on.exit(options(old), add = TRUE)
+options(stringsAsFactors = FALSE)
 
 
 on.update.view = customProDB:::on.update.view

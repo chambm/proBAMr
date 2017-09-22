@@ -61,7 +61,7 @@ PSMtab2SAM <- function(passedPSM, exon_anno,
   if (is.null(procodingseq$dna_complement))
   {
     message("Optimizing procodingseq for fast reverse complement access...")
-    procodingseqDT$dna_complement = sapply(procodingseqDT$coding, function(x) toString(reverseComplement(DNAString(x))))
+    procodingseqDT$dna_complement = sapply(procodingseqDT$coding, function(x) fastComplement(x))
     #save("procodingseq", file="procodingseq.RData")
   }
 
@@ -186,6 +186,17 @@ PSMtab2SAM <- function(passedPSM, exon_anno,
       XT <- passedPSM$NumSpecificTermini[i]
       
       numRows = length(res)
+      SEQ <- substr(res[[numRows]][[9]], res[[numRows]][[10]], res[[numRows]][[11]])
+      if (bitwAnd(res[[numRows]][[1]], 0x10))
+      {
+        SEQ <- reverse(SEQ)
+      }
+      
+      #if (XG != "U" &&
+      #    toString(translate(DNAString(SEQ))) != XP &&
+      #    toString(translate(reverseComplement(DNAString(SEQ)))) != XP)
+      #  stop("coding SEQ does not translate to peptide")
+      
       while (numRows > 0)
       {
         cat(QNAME,
@@ -197,7 +208,7 @@ PSMtab2SAM <- function(passedPSM, exon_anno,
             '\t', res[[numRows]][[6]],
             '\t', res[[numRows]][[7]],
             '\t', res[[numRows]][[8]],
-            '\t', substr(res[[numRows]][[9]], res[[numRows]][[10]], res[[numRows]][[11]]),
+            '\t', SEQ,
             '\t', res[[numRows]][[12]],
             '\t', res[[numRows]][[13]],
             '\tNH:i:', NH,
@@ -342,7 +353,6 @@ PSMtab2SAM <- function(passedPSM, exon_anno,
     POS <- as.integer(exon_anno$cds_chr_start[[idxs]] + c_sta - exon_anno$cds_start[[idxs]])
     SEQ <- dna
     FLAG <- ifelse(primary==TRUE, 0x00, 0x00+0x100)
-    
   }else{
     POS <- as.integer(exon_anno$cds_chr_start[[idxe]] + exon_anno$cds_end[[idxe]] - c_end)
     SEQ <- dna_complement

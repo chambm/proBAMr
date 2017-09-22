@@ -138,6 +138,12 @@ readPeptideShakerPsmReport <- function(psmReportFilepath)
   # NumSpecificTermini MissedCleavages Rank FdrScore SearchEngineScore 
   result = read.delim(psmReportFilepath, stringsAsFactors = FALSE)
   
+  if (sub(".*File:\"([^\"]+)\".*", "\\1", result$Spectrum.Title[1]) == result$Spectrum.Title[1]) {
+    spectrumSources = tools::file_path_sans_ext(result$Spectrum.File)
+  } else {
+    spectrumSources = tools::file_path_sans_ext(sub(".*File:\"([^\"]+)\".*", "\\1", result$Spectrum.Title))
+  }
+  
   if (sub(".*NativeID:\"([^\"]+)\"", "\\1", result$Spectrum.Title[1]) == result$Spectrum.Title[1]) {
     spectrumNativeIDs = sub(".*?\\.(\\d+)\\.\\d+.*", "\\1", result$Spectrum.Title)
   } else {
@@ -155,7 +161,7 @@ readPeptideShakerPsmReport <- function(psmReportFilepath)
     else y
   }, result$Variable.Modifications, result$Fixed.Modifications, USE.NAMES = FALSE)
   
-  data.frame(Source = tools::file_path_sans_ext(result$Spectrum.File),
+  data.frame(Source = spectrumSources,
              NativeID = spectrumNativeIDs,
              ObservedNeutralMass = (result$m.z * identifiedCharges) - (identifiedCharges * 1.007276),
              TheoreticalNeutralMass = result$Theoretical.Mass,

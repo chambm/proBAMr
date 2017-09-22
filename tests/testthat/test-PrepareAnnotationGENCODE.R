@@ -3,8 +3,7 @@ library(customProDB)
 library(proBAMr)
 
 context("PrepareAnnotationGENCODE")
-old <- options(stringsAsFactors = FALSE)
-on.exit(options(old), add = TRUE)
+options(stringsAsFactors = FALSE)
 
 load_annotations = function(annotation_path, envir, dbsnp=FALSE, cosmic=FALSE) {
   
