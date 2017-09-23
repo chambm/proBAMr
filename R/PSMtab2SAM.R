@@ -61,7 +61,7 @@ PSMtab2SAM <- function(passedPSM, exon_anno,
   if (is.null(procodingseq$dna_complement))
   {
     message("Optimizing procodingseq for fast reverse complement access...")
-    procodingseqDT$dna_complement = sapply(procodingseqDT$coding, function(x) fastComplement(x))
+    procodingseqDT$dna_complement = sapply(procodingseqDT$coding, function(x) customProDB::fastComplement(x))
     #save("procodingseq", file="procodingseq.RData")
   }
 
@@ -80,7 +80,10 @@ PSMtab2SAM <- function(passedPSM, exon_anno,
   # some coding sequences have NA pro_name??
   procodingseqDT = unique(procodingseqDT[!is.na(pro_name), .SD])
   snvprocodingDT = unique(snvprocodingDT[!is.na(pro_name), .SD])
-
+  
+  stopifnot(all(proteinseqDT$pro_name == procodingseqDT$pro_name))
+  stopifnot(all(snvproseqDT$pro_name == snvprocodingDT$pro_name))
+            
   # create joined tables with both coding and translated sequences for reference and variant proteins
   refproteinDT = proteinseqDT[procodingseqDT, .(pro_name, tx_name, tx_id, peptide, coding, dna_complement)]
   snvproteinDT = snvproseqDT[snvprocodingDT, .(pro_name, tx_name, tx_id, peptide, coding, dna_complement)]
