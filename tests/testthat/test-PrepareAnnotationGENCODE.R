@@ -41,9 +41,13 @@ test_that("Preparing annotation from GENCODE", {
     CDSfasta <- system.file("extdata", "coding_seq.fasta", package="proBAMr") 
     pepfasta <- system.file("extdata", "pro_seq.fasta", package="proBAMr") 
     annotation_path <- tempdir()
-    
-    expect_warning(PrepareAnnotationGENCODE(gtfFile, CDSfasta, pepfasta, annotation_path))
-    
+
+    if (BiocInstaller::biocVersion() < numeric_version("3.5")) {
+      expect_warning(PrepareAnnotationGENCODE(gtfFile, CDSfasta, pepfasta, annotation_path))
+    } else {
+      PrepareAnnotationGENCODE(gtfFile, CDSfasta, pepfasta, annotation_path)
+    }
+      
     env = new.env()
     load_annotations(annotation_path, env, dbsnp=FALSE, cosmic=FALSE)
     customProDB:::expect_equal_to_reference(env$exon, "exon.rds", on.update=on.update.view, on.fail=on.fail.diff)
@@ -51,5 +55,3 @@ test_that("Preparing annotation from GENCODE", {
     customProDB:::expect_equal_to_reference(env$proteinseq, "proteinseq.rds", on.update=on.update.view, on.fail=on.fail.diff)
     customProDB:::expect_equal_to_reference(env$procodingseq, "procodingseq.rds", on.update=on.update.view, on.fail=on.fail.diff)
 })
-
-
